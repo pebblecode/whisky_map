@@ -1,5 +1,7 @@
 (function(window, document, undefined){
 
+
+
 var tooltip = d3.select("#tooltip-whole")
 	.style("visibility", "hidden");
 var tooltip_text = 	d3.select("#tooltip")
@@ -22,6 +24,10 @@ var make_map = (function(data){
 
 
 	// **************   MAP SIDE OF THINGS   ****************//
+  //set flavour map div to map size  
+    var flavW = $('#flavour-map-svg').width();
+    var flavH = $('#flavour-map-svg').height();
+
 	// We pick up the SVG from the map object
 	var svg = d3.select("#map_leaflet").select("svg"),
 	g = svg.append("g");	
@@ -29,7 +35,7 @@ var make_map = (function(data){
 	   entry.LatLng = new L.LatLng(entry.lat,
 	      entry.long)
 	  })	
-	var radius = 10;
+	var radius = 10 * flavW / 400; //10 is for max size of 400, so we scale down for smaller ones
 	var color = "#d95525";		  
 	var feature = g.selectAll("circle")
 	   .data(data)
@@ -65,18 +71,31 @@ var make_map = (function(data){
 
 // **************   FLAVOUR SIDE OF THINGS   ****************//   	
 var make_flav_map = (function(data){
-		//console.log(data.name)		
-   		var svg_flav = d3.select("#flavour-map").select("svg"),
-		g_flav = svg_flav.append("g");
-		var radius = 10;
-		var flavour_scale = 40;
+
+
+    //set flavour map div to map size  
+    var flavW = $('#flavour-map-svg').width();
+    var flavH = $('#flavour-map-svg').height();
+
+    var percentOf = 0.8;
+    var marginSet = flavW * ( 1 - percentOf ) / 2
+
+    $('#flavour-container').width(flavW*percentOf).height(flavH*percentOf);
+    $('#flavour-map').width(flavW*percentOf).height(flavH*percentOf);
+    $('#flavour-map').css("top", marginSet).css("left", marginSet)
+
+
+   	var svg_flav = d3.select("#flavour-map").select("svg"),
+		    g_flav = svg_flav.append("g");
+		var radius = 10 * flavW / 400; //10 is for max size of 400, so we scale down for smaller ones
+		var flavour_scale = (flavW * 0.8 / 10); //size of svg / 10
 		var color = "#d95525";		  
 		var feature = g_flav.selectAll("circle")
 		  .data(data)
 		  .enter().append("circle")
-		  .attr('cx',-20)
+		  .attr('cx',-20) //start off screen so i animated in
 		  .attr('cy',-20)
-		  .style("opacity", .8) 
+		  .style("opacity", 0.8) 
 		  .style("fill", color) 
 		   //.style("fill", function(d){ return color(d.colour);}) 
 		  .attr("r", function(d){ return radius})
@@ -100,12 +119,6 @@ var make_flav_map = (function(data){
 });
 
 	
-	
-
-function move_tooltip(x, y){
-console.log(x);
-console.log(y);
-};
 	
 function matchname(name, radius){
 	var matching1 = d3.select("#"+name)
@@ -173,6 +186,18 @@ d3.csv('data/whisky-data.csv',function(csv){
 		make_map(csv);
 		make_flav_map(csv);
 	});
+
+
+$(window).resize(function() {
+
+  //clear current data
+  var svg_clear = d3.select("#flavour-map").select("svg");
+  svg_clear.html("");
+
+  d3.csv('data/whisky-data.csv',function(csv){   
+    make_flav_map(csv);
+  });
+});
 
       
 })(this, document);

@@ -1,0 +1,57 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/leaflet.css">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link href='http://fonts.googleapis.com/css?family=Josefin+Slab:400,700,600italic' rel='stylesheet' type='text/css'>
+	<title>Whisky Map</title>
+</head>
+
+
+
+<body>
+
+<!--************* LHS - flavour************-->
+<div class="left-side">
+	<header>
+		<p>
+			<span>Single Malt Whisky</span>
+		</p>
+		<p>
+			Flavour Map
+		</p>
+	</header>
+	<div class="flavour-container">
+		<img id="flavour-map-svg" class="flavour-chart" src="img/flavour-map.svg">
+		<div id="flavour-map" class="flavour-map">
+			<svg></svg></div>
+	</div>		
+	<div id="tooltip-whole" class="tooltip-whole">
+		<div id="tooltip">Text</div>
+		<div class="tooltip-tip"></div>
+	</div>
+</div>
+
+
+
+<!--************* RHS - map ************-->
+<div class="right-side">
+	<div id = "map_leaflet" class="map"></div>
+</div>
+
+
+
+
+
+
+
+
+<!-- *********************JAVASCRIPT*********************-->
+<script src = "js/vendor/jquery-1.10.2.min.js"></script>
+<script src = "js/vendor/d3.v3.min.js"></script>
+<script src = "js/vendor/leaflet.js"></script>
+<script src = "js/whisky.js"></script>
+</body>
+</html>
